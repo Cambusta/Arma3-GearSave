@@ -1,5 +1,5 @@
 /*
- gSave v.0.2.6
+ gSave v.0.3.0
  ------------
  by Dunecat (aka Cambusta)
  Steam: http://steamcommunity.com/id/cmb_fnc_dunecat/
@@ -13,81 +13,74 @@
  Functions
  ---------
 
- 	S - funtions that will execute only on server (listen or dedicated) and wouldn't have any effect if called on client
- 	* - optional argument
+	 S - funtions that will execute only on server (listen or dedicated) and wouldn't have any effect if called on client
+	 * - optional argument
 
- 	// Gear saving
- 	// Gear is saved to and loaded only from profiles of an actual players, a dedicated server will ignore these functions.
+	 // Gear saving
+	 // Gear is saved to and loaded only from profiles of an actual players, a dedicated server will ignore these functions.
 
- 	[saveId] spawn dnct_fnc_SaveGear 			Saves gear of a local player to his profile.
- 	[saveId] spawn dnct_fnc_SaveGearGlobal 		Causes all players to save their gear.
- 	[saveId] spawn dnct_fnc_LoadGear			Loads gear of a local player from his profile.
- 	[saveId] spawn dnct_fnc_LoadGearGlobal		Causes all players to load gear from their respective profiles.
-
-	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
- 	// Container content saving
- 	// The contents of a container can be saved to profiles of both actual players and dedicated server. Hoever, gear could be loaded only from profiles of listen
- 	// or dedicated servers. While all players posses the same data, only server loads it and distributes over the network to ensure lack of conflict.
-
- 	[saveId, container] spawn dnct_fnc_SaveContainer 		Saves contents of a certain container into local player's profile.
- 	[saveId, container] spawn dnct_fnc_SaveContainerGlobal 	Causes all clients and listen/dedicated server to save contents of the container to their profiles.
-S 	[saveId, container] spawn dnct_fnc_LoadContainer   		Loads gear from server's profile into a certain container. Executes only on server (incl. listen), has global effect.
-S 	[saveId, container] spawn dnct_fnc_LoadContainerGlobal 	Causes listen/dedicated server to load gear from its profile to a certain container.
+	 [saveId] spawn dnct_fnc_SaveGear           Saves gear of a local player to his profile.
+	 [saveId] spawn dnct_fnc_SaveGearGlobal     Causes all players to save their gear.
+	 [saveId] spawn dnct_fnc_LoadGear           Loads gear of a local player from his profile.
+	 [saveId] spawn dnct_fnc_LoadGearGlobal     Causes all players to load gear from their respective profiles.
 
 	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
- 	// Vehicle saving
- 	// Saves or loads a vehicle (its position, direction, damage, ammo, fuel, fuel/repair/ammo cargo and textures). PLEASE NOTE: These functions does not saves vehicle's gear, 
- 	// you have to save it manually using container saving.
+	 // Container content saving
+		The contents of a container can be saved to profiles of both actual players and dedicated server. Hoever, gear could be loaded only from profiles of listen
+		or dedicated servers. While all players posses the same data, only server loads it and distributes over the network to ensure lack of conflict.
 
- 	[saveId, vehicle] spawn dnct_fnc_SaveVehicle 															Saves vehicle into local's player profile
- 	[saveId, vehicle] spawn dnct_fnc_SaveVehicleGlobal														Causes all clients and listen/dedicated server to save a vehicle
-S 	[saveId, *canCollide (bool), *custom position, *custom direction] call dnct_fnc_LoadVehicle 			Loads vehicle. Executes only on server (incl. listen), has global effect. 
-																	  ''''									If called, returns a local variable that contains created vehicle.					
-S 	[saveId, *canCollide (bool), *custom position, *custom direction] spawn dnct_fnc_LoadVehicleGlobal		Causes listen/dedicated server to load a vehicle.
+	 [saveId, container] spawn dnct_fnc_SaveContainer           Saves contents of a certain container into local player's profile.
+	 [saveId, container] spawn dnct_fnc_SaveContainerGlobal     Causes all clients and listen/dedicated server to save contents of the container to their profiles.
+S    [saveId, container] spawn dnct_fnc_LoadContainer           Loads gear from server's profile into a certain container. Executes only on server (incl. listen), has global effect.
+S    [saveId, container] spawn dnct_fnc_LoadContainerGlobal      Causes listen/dedicated server to load gear from its profile to a certain container.
 
 	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
- 	// Service functions
- 	   These allow mission maker to freely delete a certain gear record. It's a good idea to delete data from players profile once you don't need it anymore.
+	 // Vehicle saving
+		Saves or loads a vehicle (its position, direction, damage, ammo, fuel, fuel/repair/ammo cargo and textures). PLEASE NOTE: These functions does not saves vehicle's gear, 
+		you have to save it manually using container saving.
 
- 	[] spawn dnct_fnc_getSaves					returns an array containing all saves and their types. It also displays said array if script is in debug mode.
- 	[saveId] spawn dnct_fnc_RemoveGear			removes a gear record with specified id from local players profile
- 	[saveId] spawn dnct_fnc_RemoveGearGlobal	removes a gear record with specified id from all players and listen/dedicated server's profile
+	 [saveId, vehicle] spawn dnct_fnc_SaveVehicle                                                           Saves vehicle into local's player profile
+	 [saveId, vehicle] spawn dnct_fnc_SaveVehicleGlobal                                                     Causes all clients and listen/dedicated server to save a vehicle
+S    [saveId, *canCollide (bool), *custom position, *custom direction] call dnct_fnc_LoadVehicle            Loads vehicle. Executes only on server (incl. listen), has global effect. 
+																											If called, returns a local variable that contains created vehicle.					
+S    [saveId, *canCollide (bool), *custom position, *custom direction] spawn dnct_fnc_LoadVehicleGlobal     Causes listen/dedicated server to load a vehicle.
+
+	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 // Service functions
+		These allow mission maker to freely delete a certain gear record. It's a good idea to delete data from players profile once you don't need it anymore.
+
+	 [] spawn dnct_fnc_getSaves                 returns an array containing all saves and their types. It also displays said array if script is in debug mode.
+	 [saveId] spawn dnct_fnc_RemoveSave         removes a gear record with specified id from local players profile
+	 [saveId] spawn dnct_fnc_RemoveSaveGlobal   removes a gear record with specified id from all players and listen/dedicated server's profile
 
 	-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
  How to
  ------
 
- 	1. Put "gSaveFncs.sqf" into your mission's folder.
+	 1. Put "gsave.sqf" into your mission's folder.
 
- 	2. Create an "init.sqf" file and put the following line in it: 
+	 2. Create an "init.sqf" file and put the following line in it: 
 
- 	   call compile preprocessFileLineNumbers "gearSaveFncs.sqf";
+		call compile preprocessFileLineNumbers "gsave.sqf";
 
+	 3. It is recommended to give players time to save or load their gear before saving or loading containers. Consider adding a brief pause (~5s) between
+	   dnct_fnc_load(save)Gear and dnct_fnc_load(save)Container calls, like this:
 
- 	3. If you plan to save the contents of a containers, it is recommended to put an empty marker named "gSaveFiller" somewhere near the containes in
- 	   question. Sometimes if the container is too far away from position of a filler unit (an invisible guy that assembles weapons and puts them into 
- 	   container) you might experience problems with loading weapons into it. Also keep in mind that there is a 2 second delay between adding weapons to a container 
- 	   (that delay does not affect all other items, however).                                                   """"""""""""""
-
-
- 	4. It is recommended to give players time to save or load their gear before saving or loading containers. Consider adding a brief pause (~5s) between
-       dnct_fnc_load(save)Gear and dnct_fnc_load(save)Container calls, like this:
-
-       0 = [] spawn { ["mymission"] spawn dnct_fnc_SaveGear; sleep 5; ["mymission_container"] spawn dnct_fnc_SaveContainer; };
+	   0 = [] spawn { ["mymission"] spawn dnct_fnc_SaveGear; sleep 5; ["mymission_container"] spawn dnct_fnc_SaveContainer; };
 
 
- 	5. 	a. Use local versions (without 'Global' postfix) of functions if you're calling them from 'Activation' fields of globlal triggers ('Server Only' is unchecked), 
- 		   waypoints 'activation' fields, units 'initialization' fields and the like.
+	 4.  a. Use local versions (without 'Global' postfix) of functions if you're calling them from 'Activation' fields of globlal triggers ('Server Only' is unchecked), 
+			waypoints 'activation' fields, units 'initialization' fields and the like.
 
- 		b. Use global versions of functions when you're calling them from server-side scripts, 'Server Only' triggers or when you're calling a function from one 
- 		   particular client but want it to have a global effect (for example, server admin forcing a dedicated server to load a vehicle).
+		 b. Use global versions of functions when you're calling them from server-side scripts, 'Server Only' triggers or when you're calling a function from one 
+			particular client but want it to have a global effect (for example, server admin forcing a dedicated server to load a vehicle).
 
 
- 	6. IMPORTANT: before exporting the mission, don't forget to set dnct_var_gsave_debug to false (see line 112) to disable debug hints and rpt messages.
+	 5. IMPORTANT: before exporting the mission, don't forget to set dnct_var_gsave_debug to false (see line 112) to disable debug hints and rpt messages.
 
 
 
@@ -96,9 +89,9 @@ S 	[saveId, *canCollide (bool), *custom position, *custom direction] spawn dnct_
 
  Disabling the debug mode won't suppress following messages generated by the script:
 
- 	 1. Empty or incorrect save ID or other function arguments;
- 	 2. Error message shown when user tries to load a wrong type of gear (i.e. adding a player's loadout to a container);
- 	 3. Error message shown when there is a weapon with an unknown type (i.e. neither a rifle, launcher, handgun or binocular);
+	  1. Empty or incorrect save ID or other function arguments;
+	  2. Error message shown when user tries to load a wrong type of gear (i.e. adding a player's loadout to a container);
+	  3. Error message shown when there is a weapon with an unknown type (i.e. neither a rifle, launcher, handgun or binocular);
 
  Since those messages signal an unrecoverable error they will not be suppressed by disabled debug mode allowing players to easily understand 
  that the mission is broken.
@@ -125,8 +118,6 @@ S 	[saveId, *canCollide (bool), *custom position, *custom direction] spawn dnct_
 #define UNIT 1
 #define CONTAINER 2
 #define VEHICLE 3
-
-#define dnct_var_allow_crutches true
 
 dnct_fnc_SaveGear = {
 
@@ -190,16 +181,16 @@ dnct_fnc_SaveGear = {
 
 
 
-		    if(!(_varName in _savedGears)) then
+			if(!(_varName in _savedGears)) then
 			{ _savedGears pushBack _varName; };
 
-		    profileNamespace setVariable["gsave_list", _savedGears];
-		    profileNamespace setVariable[_varName, _pGear];
+			profileNamespace setVariable["gsave_list", _savedGears];
+			profileNamespace setVariable[_varName, _pGear];
 
-		    if(dnct_var_gsave_debug) then
-		    { 
-		    	hint parseText format["<t align='left' size='1.2'>gSave: save successful!</t><br/><br/><t align='left'>Unit preset has been saved with an ID of '%1'.</t><br/><br/><t align='left' size='0.8' color='#808080'>This message is displayed only in debug mode.</t>", _saveID]; 
-		    };
+			if(dnct_var_gsave_debug) then
+			{ 
+				hint parseText format["<t align='left' size='1.2'>gSave: save successful!</t><br/><br/><t align='left'>Unit preset has been saved with an ID of '%1'.</t><br/><br/><t align='left' size='0.8' color='#808080'>This message is displayed only in debug mode.</t>", _saveID]; 
+			};
 		}
 		else
 		{ 
@@ -380,13 +371,13 @@ dnct_fnc_SaveContainer = {
 
 				_cGear = [CONTAINER, _cWeps, _cMags, _cItems, _cContainers];
 
-			    if(!(_varName in _savedGears)) then
+				if(!(_varName in _savedGears)) then
 				{ _savedGears pushBack _varName; };
 
-			    profileNamespace setVariable["gsave_list", _savedGears];
-			    profileNamespace setVariable[_varName, _cGear];
+				profileNamespace setVariable["gsave_list", _savedGears];
+				profileNamespace setVariable[_varName, _cGear];
 
-			    if(dnct_var_gsave_debug) then
+				if(dnct_var_gsave_debug) then
 				{ hint parseText format["<t align='left' size='1.2'>gSave: container save successful!</t><br/><br/><t align='left'>Container '%1' has been saved with an ID of '%2'.</t><br/><br/><t align='left' size='0.8' color='#808080'>This message is displayed only in debug mode.</t>", _container, _saveID]; };
 			}
 			else
@@ -441,13 +432,11 @@ dnct_fnc_LoadContainer = {
 						_cContainers = _cGear select 4;
 						_cContainersList = [];
 
-						_tContainerFiller = call dnct_fnc_createContainerFiller;
-
 						{ _cContainersList pushBack (_x select 0); } foreach _cContainers;
 
 						{
 							if([_x] call dnct_fnc_getWeaponType != BINOCULAR) then
-							{ [_container, _x, _tContainerFiller] call dnct_fnc_cargoAddWeaponInfo; }
+							{ [_container, _x] call dnct_fnc_cargoAddWeaponInfo; }
 							else
 							{ _container addWeaponCargoGlobal [(_x select 0), 1]; };
 
@@ -490,8 +479,6 @@ dnct_fnc_LoadContainer = {
 							} foreach _scItems;		
 
 						} foreach _cContainers;
-
-						[_tContainerFiller] call dnct_fnc_deleteContainerFiller;
 
 						if(dnct_var_gsave_debug) then
 						{ hint parseText format["<t align='left' size='1.2'>gSave: container load successful!</t><br/><br/><t align='left'>Container preset with and ID of '%1' has been loaded into '%2'.</t><br/><br/><t align='left' size='0.8' color='#808080'>This message is displayed only in debug mode.</t>", _varName, _container]; };
@@ -539,42 +526,42 @@ dnct_fnc_SaveVehicle = {
 				_savedGears = profileNamespace getVariable["gsave_list", []];
 				_unit = player;
 
-	   			_vType = typeof _vehicle;
-	   			_vPos = getPosATL _vehicle;
-	   			_vDir = direction _vehicle;
-		   		_vHitpoints = getAllHitpointsDamage _vehicle;
-	   			_vAmmo = magazinesAmmo _vehicle;
-	   			_vFuel = fuel _vehicle;
+				   _vType = typeof _vehicle;
+				   _vPos = getPosATL _vehicle;
+				   _vDir = direction _vehicle;
+				   _vHitpoints = getAllHitpointsDamage _vehicle;
+				   _vAmmo = magazinesAmmo _vehicle;
+				   _vFuel = fuel _vehicle;
 
-	   			_vFuelCargo = getFuelCargo _vehicle;
-	   			_vAmmoCargo = getAmmoCargo _vehicle;
-	   			_vRepairCargo = getRepairCargo _vehicle;
+				   _vFuelCargo = getFuelCargo _vehicle;
+				   _vAmmoCargo = getAmmoCargo _vehicle;
+				   _vRepairCargo = getRepairCargo _vehicle;
 
-	   			_vTextures = getObjectTextures _vehicle;
+				   _vTextures = getObjectTextures _vehicle;
 
-	   			if(!finite _vFuelCargo) then
-	   			{ _vFuelCargo = -1; };
+				   if(!finite _vFuelCargo) then
+				   { _vFuelCargo = -1; };
 
-	   			if(!finite _vAmmoCargo) then
-	   			{ _vAmmoCargo = -1; };
+				   if(!finite _vAmmoCargo) then
+				   { _vAmmoCargo = -1; };
 
-	   			if(!finite _vRepairCargo) then
-	   			{ _vRepairCargo = -1; };
+				   if(!finite _vRepairCargo) then
+				   { _vRepairCargo = -1; };
 
-		   		_vRecord = [VEHICLE, _vType, _vPos, _vDir, _vHitpoints, _vAmmo, _vFuel, _vFuelCargo, _vAmmoCargo, _vRepairCargo, _vTextures];
+				   _vRecord = [VEHICLE, _vType, _vPos, _vDir, _vHitpoints, _vAmmo, _vFuel, _vFuelCargo, _vAmmoCargo, _vRepairCargo, _vTextures];
 
-	   			if(!(_varName in _savedGears)) then
+				   if(!(_varName in _savedGears)) then
 				{ _savedGears pushBack _varName; };
 
-			    profileNamespace setVariable["gsave_list", _savedGears];
-		    	profileNamespace setVariable[_varName, _vRecord];
+				profileNamespace setVariable["gsave_list", _savedGears];
+				profileNamespace setVariable[_varName, _vRecord];
 
-			    if(dnct_var_gsave_debug) then
+				if(dnct_var_gsave_debug) then
 				{ hint parseText format["<t align='left' size='1.2'>gSave: vehicle save successful!</t><br/><br/><t align='left'>Vehicle '%1' has been saved with an ID of '%2'.</t><br/><br/><t align='left' size='0.8' color='#808080'>This message is displayed only in debug mode.</t>", _vehicle, _saveID]; };
 			}
 			else
 			{
-			    if(dnct_var_gsave_debug) then
+				if(dnct_var_gsave_debug) then
 				{ hint parseText format["<t align='left' size='1.2'>gSave Vehicle Save Error</t><br/><br/><t align='left'>The vehicle '%1' has beed destroyed. Destroyed vehicles could not be saved.</t><br/><br/><t align='left' size='0.8' color='#808080'>This message is displayed only in debug mode.</t>", _vehicle]; };
 			};
 		}
@@ -699,7 +686,7 @@ dnct_fnc_LoadVehicle = {
 	};
 };
 
-dnct_fnc_RemoveGear = {
+dnct_fnc_RemoveSave = {
 
 	_saveId = _this select 0;
 
@@ -767,7 +754,7 @@ dnct_fnc_unitAddWeaponInfo = {
 					_unit addSecondaryWeaponItem _laser;
 					_unit addSecondaryWeaponItem _optic;
 					_unit addSecondaryWeaponItem _bipod;
-			     };
+				 };
 		case HANDGUN : {
 					removeAllHandgunItems _unit; 
 
@@ -793,14 +780,13 @@ dnct_fnc_cargoAddWeaponInfo = {
 	
 	_container = _this select 0;
 	_weaponInfo= _this select 1;
-	_containerFiller = _this select 2;
 
 	_weapon = _weaponInfo select 0;
 	_supp	= _weaponInfo select 1;
 	_laser  = _weaponInfo select 2;
 	_optic	= _weaponInfo select 3;
 	_magInfo= _weaponInfo select 4;
-	_glInfo	= nil;
+	_glInfo	= [];
 	_bipod = "";
 
 	if(count _weaponInfo == 7) then
@@ -811,7 +797,18 @@ dnct_fnc_cargoAddWeaponInfo = {
 	else
 	{ _bipod = _weaponInfo select 5; };				
 
-	[_weaponInfo, _container, _containerFiller] call fnc_addWeaponWithItems;
+	_container addWeaponWithAttachmentsCargo [
+		[
+			_weapon, 
+			_supp, 
+			_laser, 
+			_optic, 
+			_magInfo, 
+			_glInfo, 
+			_bipod
+		], 
+		1
+	];
 };
 
 dnct_fnc_cargoAddMagazineInfo = {
@@ -834,25 +831,6 @@ dnct_fnc_findWeaponIndexInfo = {
 	} foreach _weaponInfo;
 
 	_index
-};
-
-fnc_addWeaponWithItems = {
-
-	/*
-		All credit for this idea goes to larrow
-		https://forums.bistudio.com/topic/188339-adding-weapon-to-crate-with-specific-attachments/?p=2984843
-	*/
-
-    params [ "_weaponInfo", "_container", "_containerFiller" ];    
-
-    _weapon = _weaponInfo select 0;
-    _weaponType = [_weapon] call dnct_fnc_getWeaponType;
-    
-    [_weaponInfo, _containerFiller] call dnct_fnc_unitAddWeaponInfo; 
-    _containerFiller action [ "DropWeapon", _container, _weapon ];
-
-    if(dnct_var_allow_crutches) then
-    { sleep 2; };
 };
 
 dnct_fnc_SaveGearGlobal = 
@@ -898,10 +876,10 @@ dnct_fnc_LoadVehicleGlobal =
 	[_saveId, _exact, _position, _direction] remoteExec ["dnct_fnc_LoadVehicle"];
 };
 
-dnct_fnc_RemoveGearGlobal = 
+dnct_fnc_RemoveSaveGlobal = 
 {
 	_saveId = _this select 0;
-	[_saveId] remoteExec ["dnct_fnc_RemoveGear"];
+	[_saveId] remoteExec ["dnct_fnc_RemoveSave"];
 };
 
 dnct_fnc_purgeData = 
@@ -909,13 +887,13 @@ dnct_fnc_purgeData =
 
 	/*
 		WARNING
-	    """""""
+		"""""""
 
-	   	This function will delete literally all data that is used by the script so the only time you want to use
-	   	it when you need to remove all traces of this script from your Arma 3 profile. PLEASE USE THIS FUNCTION
-	    MINDFULLY BECAUSE YOU MIGHT DELETE PLAYER'S PROGRESS COMPLETELY.
+		This function will delete literally all data that is used by the script so the only time you want to use
+		it when you need to remove all traces of this script from your Arma 3 profile. PLEASE USE THIS FUNCTION
+		MINDFULLY BECAUSE YOU MIGHT DELETE PLAYER'S PROGRESS COMPLETELY.
 
-	    To prevent such situations from occureing, this function by default will only execute in debug mode.
+		To prevent such situations from occureing, this function by default will only execute in debug mode.
 	*/
 
 	if(dnct_var_gsave_debug) then
@@ -940,13 +918,13 @@ dnct_fnc_purgeDataGlobal =
 {
 	/*
 		WARNING
-	    """""""
+		"""""""
 
-	   	This function will delete literally all data that is used by the script so the only time you want to use
-	   	it when you need to remove all traces of this script from your Arma 3 profile. PLEASE USE THIS FUNCTION
-	    MINDFULLY BECAUSE YOU MIGHT DELETE PLAYER'S PROGRESS COMPLETELY.
+		This function will delete literally all data that is used by the script so the only time you want to use
+		it when you need to remove all traces of this script from your Arma 3 profile. PLEASE USE THIS FUNCTION
+		MINDFULLY BECAUSE YOU MIGHT DELETE PLAYER'S PROGRESS COMPLETELY.
 
-	    To prevent such situations from occuring, this function by default will only execute in debug mode.
+		To prevent such situations from occuring, this function by default will only execute in debug mode.
 
 	*/
 
@@ -994,49 +972,4 @@ dnct_fnc_getWeaponType = {
 	_type = getNumber (configFile >> "CfgWeapons" >> _weapon >> "Type");
 
 	_type
-};
-
-dnct_fnc_createContainerFiller = {
-	
-	_fnc_clearUnit = {
-        params[ "_unit" ];
-        removeAllWeapons _unit;
-        removeAllItems _unit;
-    };
-
-    _containerFillerPos = getMarkerPos "gSaveFiller";
-    
-    _grp = createGroup civilian;
-    _containerFiller = _grp createUnit [ "C_Man_1", _containerFillerPos, [], 0, "NONE" ];
-    _containerFiller allowDamage false;
-    
-    if(!dnct_var_gsave_debug) then
-    { hideObjectGlobal _containerFiller; };
-
-    {
-        _containerFiller disableAI _x
-    }forEach [
-        "TARGET",
-        "AUTOTARGET",
-        "MOVE",
-        "ANIM",
-        "TEAMSWITCH",
-        "FSM",
-        "CHECKVISIBLE",
-        "COVER",
-        "AUTOCOMBAT"
-    ];
-
-    _containerFiller call _fnc_clearUnit;
-
-    _containerFiller
-};
-
-dnct_fnc_deleteContainerFiller = {
-
-	_containerFiller = _this select 0;
-	_group = group _containerFiller;
-
-	deleteVehicle _containerFiller;
-	deleteGroup _group;	
 };
